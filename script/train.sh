@@ -5,7 +5,7 @@
 
 CONFIG="dlhlp_asr"
 
-DIR="/model"
+DIR="./E2E_ASR"
 
 echo "Start running training process of E2E ASR"
 CUDA_VISIBLE_DEVICES=$2 python3 main.py --config config/${CONFIG}.yaml \
