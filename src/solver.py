@@ -36,6 +36,9 @@ class BaseSolver():
         # Plugin list
         self.emb_decoder = None
 
+        """
+        To enable transfer learning, config file must contain transfer, and specific train_enc, train_dec
+        """
         self.transfer_learning = False
         # Transfer Learning
         if (self.config.get('transfer', None) is not None) and mode == 'train':

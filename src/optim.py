@@ -6,11 +6,17 @@ class Optimizer():
                     tf_start=1, tf_end=1, tf_step=1, tf_step_start=0, 
                     weight_decay=0, amsgrad=False, **kwargs):
         
+        """
+        Linear techer foring scheduler
+        """
         # Setup teacher forcing scheduler
         self.tf_type = tf_end!=1
         self.tf_rate = lambda step: max(tf_end, 
             tf_start-(tf_start-tf_end)*(step-tf_step_start)/tf_step if step >= tf_step_start else 1)
 
+        """
+        warmup mode lr = init_lr when warmup_step is achieved, modify it to manual set learning rate
+        """
         # Setup torch optimizer
         self.opt_type = optimizer
         self.init_lr = lr

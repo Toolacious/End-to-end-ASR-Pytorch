@@ -82,6 +82,10 @@ class Solver(BaseSolver):
                 self.seq_loss = torch.nn.NLLLoss(ignore_index=0)
             self.verbose(self.emb_decoder.create_msg())
 
+        """
+        **kwargs(self.config here) contains name-value pairs, automatically converts to positional argument
+        Please refer to constructor of Optimizer in src/optim.py 
+        """
         # Optimizer
         self.optimizer = Optimizer(model_paras, **self.config['hparas'])
         self.verbose(self.optimizer.create_msg())

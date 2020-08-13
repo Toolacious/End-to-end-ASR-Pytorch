@@ -9,6 +9,10 @@ import numpy as np
 torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
 
+"""
+Parser parse script command by pairing key and str(or specific type)
+For example, --config [Filename] set paras.config = [Filename] (type str), --njobs 8 set paras.njobs = 8 (type int)
+"""
 # Arguments
 parser = argparse.ArgumentParser(description='Training E2E asr.')
 parser.add_argument('--config', type=str, help='Path to experiment config.')
@@ -30,6 +34,10 @@ parser.add_argument('--reserve_gpu', default=0, type=float, help='Option to rese
 parser.add_argument('--jit', action='store_true', help='Option for enabling jit in pytorch. (feature in development)')
 parser.add_argument('--cuda', default=0, type=int, help='Choose which gpu to use.')
 
+"""
+setattr(object, name, value)
+For example, paras.gpu = not paras.cpu
+"""
 paras = parser.parse_args()
 setattr(paras,'gpu',not paras.cpu)
 setattr(paras,'pin_memory',not paras.no_pin)
@@ -50,6 +58,9 @@ if paras.gpu and paras.reserve_gpu>0:
     buff = torch.randn(int(paras.reserve_gpu*1e9//4)).to(torch.device('cuda:' + str(paras.cuda)))
     del buff
 
+"""
+Solver inherits from class Basesolver in src/solver.py, containing all things we need
+"""
 if paras.lm:
     # Train RNNLM
     from bin.train_lm import Solver
