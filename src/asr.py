@@ -14,6 +14,9 @@ class ASR(nn.Module):
     def __init__(self, input_size, vocab_size, ctc_weight, encoder, attention, decoder, emb_drop=0.0, init_adadelta=True):
         super(ASR, self).__init__()
 
+        """
+        Weighted loss with ctc and att loss 
+        """
         # Setup
         assert 0<=ctc_weight<=1
         self.vocab_size = vocab_size
@@ -22,6 +25,9 @@ class ASR(nn.Module):
         self.enable_att = ctc_weight != 1
         self.lm = None
 
+        """
+        Definition of Encoder, Decoder, Attention is written below in this file
+        """
         # Modules
         self.encoder = Encoder(input_size, **encoder)
         if self.enable_ctc:
@@ -168,6 +174,9 @@ class Decoder(nn.Module):
         self.hidden_state = None
         self.enable_cell = module=='LSTM'
         
+        """
+        Speller is a GRU/LSTM
+        """
         # Modules
         self.layers = getattr(nn,module)(input_dim,dim, num_layers=layer, dropout=dropout, batch_first=True)
         self.char_trans = nn.Linear(dim,vocab_size)
@@ -306,6 +315,9 @@ class Attention(nn.Module):
 class Encoder(nn.Module):
     ''' Encoder (a.k.a. Listener in LAS)
         Encodes acoustic feature to latent representation, see config file for more details.'''
+    """
+    Encoder composed of one vgg extractor followed by num_layers RNNLayers(GRU/LSTM) from src/module.py
+    """
     def __init__(self, input_size, vgg, vgg_freq, vgg_low_filt, module, bidirection, dim, dropout, layer_norm, proj, sample_rate, sample_style):
         super(Encoder, self).__init__()
 
@@ -323,6 +335,9 @@ class Encoder(nn.Module):
         module_list = []
         input_dim = input_size
 
+        """
+        Four kinds of vgg extractor
+        """
         if vgg > 0:
             if vgg == 1:
                 vgg_extractor = VGGExtractor(input_size)
