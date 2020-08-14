@@ -102,7 +102,7 @@ Note : If the text unit is phoneme, WER = PER and CER is meaningless.
 Note : If the text unit is phoneme, WER = PER and CER is meaningless.
 
 
-Experiment name: exp2(Ping)
+Experiment name: exp2(Ping) Schedule sampling, forcing ratio decrease 1/80000 per step 
 
 ============  Result of ./E2E_ASR/test_result/exp2/exp2_dev_output.csv ============
  -----------------------------------------------------------------------
