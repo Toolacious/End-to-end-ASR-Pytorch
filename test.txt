@@ -35,6 +35,9 @@ Note : If the text unit is phoneme, WER = PER and CER is meaningless.
 
 
 
+
+
+
 Experiment name: exp1(Ping)
 
 ============  Result of model/test_result/exp1/exp1_dev_output.csv ============
@@ -203,3 +206,37 @@ Note : If the text unit is phoneme, WER = PER and CER is meaningless.
 | Word		| 4.1313	| 5.18		| 0.00/29.41	|
  ---------------------------------------------------------------
 Note : If the text unit is phoneme, WER = PER and CER is meaningless.
+
+Experiment name: exp5 Spec Augment max_mf = 20 max_mt = T / 10
+
+============  Result of ./E2E_ASR/test_result/exp6/exp6_dev_output.csv ============
+ -----------------------------------------------------------------------
+| Statics		|  Truth	|  Prediction	| Abs. Diff.	|
+ -----------------------------------------------------------------------
+| Avg. # of chars	|  66.99	|  66.93	|  0.27		|
+| Avg. # of words	|  17.14	|  17.12	|  0.02		|
+ -----------------------------------------------------------------------
+ ---------------------------------------------------------------
+| Error Rate (%)| Mean		| Std.		| Min./Max.	|
+ ---------------------------------------------------------------
+| Character	| 1.4621	| 1.96		| 0.00/19.44	|
+| Word		| 5.0330	| 6.17		| 0.00/50.00	|
+ ---------------------------------------------------------------
+Note : If the text unit is phoneme, WER = PER and CER is meaningless.
+
+
+============  Result of ./E2E_ASR/test_result/exp6/exp6_test_output.csv ============
+ -----------------------------------------------------------------------
+| Statics		|  Truth	|  Prediction	| Abs. Diff.	|
+ -----------------------------------------------------------------------
+| Avg. # of chars	|  68.84	|  68.83	|  0.22		|
+| Avg. # of words	|  17.57	|  17.57	|  0.01		|
+ -----------------------------------------------------------------------
+ ---------------------------------------------------------------
+| Error Rate (%)| Mean		| Std.		| Min./Max.	|
+ ---------------------------------------------------------------
+| Character	| 1.1100	| 1.48		| 0.00/10.11	|
+| Word		| 4.0536	| 5.19		| 0.00/31.82	|
+ ---------------------------------------------------------------
+Note : If the text unit is phoneme, WER = PER and CER is meaningless.
+
