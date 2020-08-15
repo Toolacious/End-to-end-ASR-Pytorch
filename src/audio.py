@@ -7,6 +7,7 @@ from scipy import signal, ndimage
 from librosa import feature
 
 import numpy as np
+import random
 
 GRIFFIN_LIM_ITER = 50
 SAMPLE_RATE = 16000
@@ -67,7 +68,7 @@ class Delta(torch.jit.ScriptModule):
             return F.conv2d(x, weight=self.filters, padding=self.padding)
         else:
             x = x.unsqueeze(0) # 1 x 1 x T x MEL
-            return F.conv2d(x, weight=self.filters, padding=self.padding)[0]
+            return f.conv2d(x, weight=self.filters, padding=self.padding)[0]
 
     # TODO(WindQAQ): find more elegant way to create `scales`
     def _create_filters(self, order, window_size):
