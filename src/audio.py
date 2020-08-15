@@ -120,6 +120,31 @@ class Postprocess(torch.jit.ScriptModule):
             # [batch, time, channel, feature_dim] -> [time, feature_dim * channel]
             return x.reshape(x.shape[0], x.shape[1], -1)
 
+class SpecAugment(nn.Module):
+    def __init__(self, mf, mt):
+        super(SpecAugment, self).__init__()
+        self.mf = mf
+        self.mt = mt
+
+    def forward(self, msp):
+        # msp: 1 x T x MEL
+        _, T, MEL = msp.size()
+
+        # Frequency mask
+        for _ in range(self.mf):
+            r = random.randint(0, 10)
+            st = random.rand(MEL-r)
+            msp[:, :, st:st+r] = 0.0
+
+        # Time mask
+        for _ in range(self.mt):
+            r = random.randint(0, T / 20)
+            st = random.rand(T-r)
+            msp[:, st:st+r, :] = 0.0
+        
+        return msp
+
+
 # TODO(Windqaq): make this scriptable
 class ExtractAudioFeature(nn.Module):
     def __init__(self, mode, num_mel_bins, frame_length, frame_shift, ref_level_db, 
@@ -324,6 +349,9 @@ def create_transform(audio_config, post_process=True):
     transforms = [ReadAudio(SAMPLE_RATE)]
 
     transforms.append(ExtractAudioFeature(mode=feat_type, num_mel_bins=feat_dim, sample_rate=SAMPLE_RATE, **audio_config))
+    
+    if audio_config.SpecAugment:
+        transforms.append(SpecAugment(audio_config.mf, audio_config.mt))
 
     if delta_order >= 1:
         transforms.append(Delta(delta_order, delta_window_size))

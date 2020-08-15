@@ -102,10 +102,17 @@ def create_textset(tokenizer, train_split, dev_split, name, path, bucketing, bat
 
 def load_dataset(n_jobs, use_gpu, pin_memory, ascending, corpus, audio, text):
     ''' Prepare dataloader for training/validation'''
+    """
+    audio file preprocessing(create_transform) is in src/audio.py
+    """
     # Audio feature extractor
     audio_transform_tr, feat_dim = create_transform(audio.copy())
     audio_transform_dv, feat_dim = create_transform(audio.copy())
     
+    """
+    DlhlpDataset/LibriDataset is first created, data is in form (wav path, converted txt label)
+    DataLoader then use collate_fn to transform wav path to acoustic features
+    """
     # Text tokenizer
     tokenizer = load_text_encoder(**text)
     # Dataset (in testing mode, tr_set=dv_set, dv_set=tt_set)
