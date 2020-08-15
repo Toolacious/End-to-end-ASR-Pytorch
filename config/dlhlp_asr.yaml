@@ -19,9 +19,6 @@ data:
     ref_level_db: 20
     min_level_db: -100
     preemphasis_coeff: 0.97
-    SpecAugment: True                     # SpecAugment with mf freq masks, mt time masks
-    mf: 1
-    mt: 1
 
   text:
     mode: 'character'                     # 'character'/'word == phone'/'subword'

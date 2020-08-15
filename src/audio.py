@@ -68,7 +68,7 @@ class Delta(torch.jit.ScriptModule):
             return F.conv2d(x, weight=self.filters, padding=self.padding)
         else:
             x = x.unsqueeze(0) # 1 x 1 x T x MEL
-            return f.conv2d(x, weight=self.filters, padding=self.padding)[0]
+            return F.conv2d(x, weight=self.filters, padding=self.padding)[0]
 
     # TODO(WindQAQ): find more elegant way to create `scales`
     def _create_filters(self, order, window_size):
@@ -133,14 +133,14 @@ class SpecAugment(nn.Module):
 
         # Frequency mask
         for _ in range(self.mf):
-            r = random.randint(0, 10)
-            st = random.rand(MEL-r)
+            r = random.randint(0, 20)
+            st = random.randint(0, MEL - r)
             msp[:, :, st:st+r] = 0.0
 
         # Time mask
         for _ in range(self.mt):
-            r = random.randint(0, T / 20)
-            st = random.rand(T-r)
+            r = random.randint(0, T / 10)
+            st = random.randint(0, T - r)
             msp[:, st:st+r, :] = 0.0
         
         return msp
@@ -351,8 +351,7 @@ def create_transform(audio_config, post_process=True):
 
     transforms.append(ExtractAudioFeature(mode=feat_type, num_mel_bins=feat_dim, sample_rate=SAMPLE_RATE, **audio_config))
     
-    if audio_config.SpecAugment:
-        transforms.append(SpecAugment(audio_config.mf, audio_config.mt))
+    transforms.append(SpecAugment(1, 1))
 
     if delta_order >= 1:
         transforms.append(Delta(delta_order, delta_window_size))
