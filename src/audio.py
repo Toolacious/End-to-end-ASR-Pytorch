@@ -121,6 +121,39 @@ class Postprocess(torch.jit.ScriptModule):
             # [batch, time, channel, feature_dim] -> [time, feature_dim * channel]
             return x.reshape(x.shape[0], x.shape[1], -1)
 
+
+class NoiseAugment(nn.Module):
+    def __init__(self):
+        super(NoiseAugment, self).__init__()
+
+    def forward(self, waveform):
+        pass
+
+
+class ShiftAugment(nn.Module):
+    def __init__(self):
+        super(ShiftAugment, self).__init__()
+
+    def forward(self, waveform):
+        pass
+
+
+class PitchAugment(nn.Module):
+    def __init__(self):
+        super(PitchAugment, self).__init__()
+
+    def forward(self, waveform):
+        pass
+
+
+class SpeedAugment(nn.Module):
+    def __init__(self):
+        super(SpeedAugment, self).__init__()
+
+    def forward(self, waveform):
+        pass
+
+
 class SpecAugment(nn.Module):
     def __init__(self, mf, mt):
         super(SpecAugment, self).__init__()
@@ -133,7 +166,7 @@ class SpecAugment(nn.Module):
 
         # Frequency mask
         for _ in range(self.mf):
-            r = random.randint(0, 20)
+            r = random.randint(0, 25)
             st = random.randint(0, MEL - r)
             msp[:, :, st:st+r] = 0.0
 
@@ -306,6 +339,7 @@ class ExtractAudioFeature(nn.Module):
             onesided=True)
         return x
 
+
 class ReadAudio(nn.Module):
     # Read audio files and downsample to specified sample rate
     def __init__(self, desired_sr):
@@ -323,6 +357,7 @@ class ReadAudio(nn.Module):
                                                                     self.desired_sr)
         # print('new shape  : {}'.format(waveform.shape))
         return waveform
+
 
 def pop_audio_config(audio_config):
     # Delta
@@ -342,16 +377,32 @@ def create_transform(audio_config, post_process=True):
     delta_order = audio_config.pop("delta_order", 0)
     delta_window_size = audio_config.pop("delta_window_size", 2)
     apply_cmvn = audio_config.pop("apply_cmvn", False)
+    apply_audio_augment = audio.config.pop("apply_audio_augment", [False, False, False, False])
+    apply_spec_augment = audio.config.pop("apply_spec_augment", False)
+    mf = audio.config.pop("mf", 0)
+    mt = audio.config.pop("mt", 0)
 
+    transforms = [ReadAudio(SAMPLE_RATE)]
+    
+    # Audio Augment
+    augment_list = []
+    augment_list.append(NoiseAugment())
+    augment_list.append(ShiftAugment())
+    augment_list.append(PitchAugment())
+    augment_list.append(SpeedAugment())
+    for augment, state in zip(augment_list, apply_audio_augment):
+        if state:
+            transforms.append(augment)
+        
     # Extract Feature
     feat_type = audio_config.pop("feat_type")
     feat_dim = audio_config.pop("feat_dim")
 
-    transforms = [ReadAudio(SAMPLE_RATE)]
-
     transforms.append(ExtractAudioFeature(mode=feat_type, num_mel_bins=feat_dim, sample_rate=SAMPLE_RATE, **audio_config))
     
-    transforms.append(SpecAugment(1, 1))
+    # Spec Augment
+    if apply_spec_augment:
+        transforms.append(SpecAugment(mf, mt))
 
     if delta_order >= 1:
         transforms.append(Delta(delta_order, delta_window_size))

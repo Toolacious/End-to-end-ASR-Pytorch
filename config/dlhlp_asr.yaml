@@ -19,6 +19,10 @@ data:
     ref_level_db: 20
     min_level_db: -100
     preemphasis_coeff: 0.97
+    apply_audio_augment: [False, False, False, False]             # Audio Augments: Noise, Shift, Pitch, Speed
+    apply_spec_augment: True                                      # Spec Augment
+    mf: 1
+    mt: 1
 
   text:
     mode: 'character'                     # 'character'/'word == phone'/'subword'
