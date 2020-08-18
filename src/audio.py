@@ -377,10 +377,10 @@ def create_transform(audio_config, post_process=True):
     delta_order = audio_config.pop("delta_order", 0)
     delta_window_size = audio_config.pop("delta_window_size", 2)
     apply_cmvn = audio_config.pop("apply_cmvn", False)
-    apply_audio_augment = audio.config.pop("apply_audio_augment", [False, False, False, False])
-    apply_spec_augment = audio.config.pop("apply_spec_augment", False)
-    mf = audio.config.pop("mf", 0)
-    mt = audio.config.pop("mt", 0)
+    apply_audio_augment = audio_config.pop("apply_audio_augment", [False, False, False, False])
+    apply_spec_augment = audio_config.pop("apply_spec_augment", False)
+    mf = audio_config.pop("mf", 0)
+    mt = audio_config.pop("mt", 0)
 
     transforms = [ReadAudio(SAMPLE_RATE)]
     
