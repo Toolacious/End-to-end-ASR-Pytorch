@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CONFIG="librispeech_lm"
+CONFIG="dlhlp_lm"
 DIR="./E2E_ASR"
 
 echo "Start running training process of RNNLM"
