@@ -4,7 +4,7 @@ import torch.nn.functional as F
 import torchaudio
 
 from scipy import signal, ndimage
-from librosa import feature
+from librosa import feature, effects
 
 import numpy as np
 import random
@@ -125,33 +125,43 @@ class Postprocess(torch.jit.ScriptModule):
 class NoiseAugment(nn.Module):
     def __init__(self):
         super(NoiseAugment, self).__init__()
+        self.noise_factor = 0.02
 
-    def forward(self, waveform):
-        pass
+    def forward(self, data):
+        noise = torch.randn(len(data))
+        noised_data = data + self.noise_factor * noise
+        return noised_data
 
 
 class ShiftAugment(nn.Module):
     def __init__(self):
         super(ShiftAugment, self).__init__()
 
-    def forward(self, waveform):
-        pass
+    def forward(self, data):
+        shift = random.randint(0, 1000)
+        shifted_data = torch.roll(data, shift)
+        shifted_data[:, :shift] = 0
+        return shifted_data
 
 
 class PitchAugment(nn.Module):
     def __init__(self):
         super(PitchAugment, self).__init__()
 
-    def forward(self, waveform):
-        pass
+    def forward(self, data):
+        pitch_factor = random.uniform(0.01, 5.0)
+        data = data.numpy()
+        return torch.tensor(effects.pitch_shift(data, 16000, pitch_factor))
 
 
 class SpeedAugment(nn.Module):
     def __init__(self):
         super(SpeedAugment, self).__init__()
 
-    def forward(self, waveform):
-        pass
+    def forward(self, data):
+        speed_factor = random.uniform(0.9, 1.1)
+        data = data.numpy()
+        return torch.tensor(effects.time_stretch(data, speed_factor))
 
 
 class SpecAugment(nn.Module):
