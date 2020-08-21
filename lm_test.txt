@@ -99,7 +99,41 @@ Note : If the text unit is phoneme, WER = PER and CER is meaningless.
  ---------------------------------------------------------------
 Note : If the text unit is phoneme, WER = PER and CER is meaningless.
 
-test4: Exp5  + LM(No changes, Beam size:2)
+test4: Exp4  + LM(No changes, Beam size:5)
+
+============  Result of ./E2E_ASR/test_result/test4/test4_dev_output.csv ============
+ -----------------------------------------------------------------------
+| Statics		|  Truth	|  Prediction	| Abs. Diff.	|
+ -----------------------------------------------------------------------
+| Avg. # of chars	|  66.99	|  66.95	|  0.30		|
+| Avg. # of words	|  17.14	|  17.11	|  0.03		|
+ -----------------------------------------------------------------------
+ ---------------------------------------------------------------
+| Error Rate (%)| Mean		| Std.		| Min./Max.	|
+ ---------------------------------------------------------------
+| Character	| 1.3279	| 2.54		| 0.00/46.97	|
+| Word		| 4.2081	| 5.73		| 0.00/50.00	|
+ ---------------------------------------------------------------
+Note : If the text unit is phoneme, WER = PER and CER is meaningless.
+
+
+============  Result of ./E2E_ASR/test_result/test4/test4_test_output.csv ============
+ -----------------------------------------------------------------------
+| Statics		|  Truth	|  Prediction	| Abs. Diff.	|
+ -----------------------------------------------------------------------
+| Avg. # of chars	|  68.84	|  68.77	|  0.30		|
+| Avg. # of words	|  17.57	|  17.54	|  0.04		|
+ -----------------------------------------------------------------------
+ ---------------------------------------------------------------
+| Error Rate (%)| Mean		| Std.		| Min./Max.	|
+ ---------------------------------------------------------------
+| Character	| 1.0374	| 2.64		| 0.00/51.19	|
+| Word		| 3.3637	| 5.17		| 0.00/57.14	|
+ ---------------------------------------------------------------
+Note : If the text unit is phoneme, WER = PER and CER is meaningless.
+
+
+test5: Exp5  + LM(No changes, Beam size:2)
 ============  Result of ./E2E_ASR/test_result/test5/test5_dev_output.csv ============
  -----------------------------------------------------------------------
 | Statics		|  Truth	|  Prediction	| Abs. Diff.	|
